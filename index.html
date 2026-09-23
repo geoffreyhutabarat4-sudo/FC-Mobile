@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>FC Champions Mobile ⚽ - Ultimate Soccer & Squad Builder</title>
+  <meta name="description" content="Game sepak bola mobile HD mirip FC Mobile. Bangun Ultimate Team impian, beli pemain di bursa transfer, atur formasi & substitusi, dan mainkan pertandingan 60 FPS!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- TOP GLOBAL HEADER / CURRENCY BAR -->
+    <header class="top-bar">
+      <div class="brand">
+        <div class="brand-logo">⚽</div>
+        <div>
+          <h1 class="brand-title">FC CHAMPIONS</h1>
+          <div class="brand-edition">MOBILE ULTIMATE</div>
+        </div>
+      </div>
+
+      <div class="currencies">
+        <div class="currency-badge coins" title="Koin Klub">
+          <span class="curr-icon">🪙</span>
+          <span id="top-coins">0</span>
+        </div>
+        <div class="currency-badge gems" title="FC Gems">
+          <span class="curr-icon">💎</span>
+          <span id="top-gems">0</span>
+        </div>
+        <button id="sound-btn" class="btn-icon" title="Toggle Sound">🔊</button>
+      </div>
+    </header>
+
+    <!-- MAIN VIEW CONTAINER -->
+    <main class="main-container">
+
+      <!-- ================= 1. HOME DASHBOARD ================= -->
+      <section id="view-home" class="view-section active">
+        <div class="home-hero">
+          <div class="team-banner">
+            <div class="banner-badge">SQUAD SUMMARY</div>
+            <div class="team-ovr-box">
+              <div class="ovr-num" id="home-team-ovr">85</div>
+              <div class="ovr-label">TEAM OVR</div>
+            </div>
+            <div class="team-chem-box">
+              <div class="chem-num" id="home-team-chem">100</div>
+              <div class="chem-label">CHEMISTRY</div>
+            </div>
+            <div class="team-name" id="home-team-name">FC CHAMPIONS XI</div>
+          </div>
+
+          <div class="quick-actions-grid">
+            <div class="action-card play-card" id="btn-quick-match">
+              <div class="card-bg-icon">🏟️</div>
+              <div class="card-content">
+                <span class="card-tag">LIVE 60 FPS MATCH</span>
+                <h2>MAIN PERTANDINGAN</h2>
+                <p>Tantang skuad AI bintang dunia dalam laga penuh aksi!</p>
+                <button class="btn-play-action">🔥 KICK-OFF SEKARANG</button>
+              </div>
+            </div>
+
+            <div class="action-card squad-card" id="btn-goto-squad">
+              <div class="card-bg-icon">📋</div>
+              <div class="card-content">
+                <span class="card-tag">TACTICS & SUBS</span>
+                <h3>TIM SAYA</h3>
+                <p>Ganti pemain, atur formasi & naikkan Team OVR!</p>
+              </div>
+            </div>
+
+            <div class="action-card market-card" id="btn-goto-market">
+              <div class="card-bg-icon">🛒</div>
+              <div class="card-content">
+                <span class="card-tag">TRANSFER MARKET</span>
+                <h3>BURSA TRANSFER</h3>
+                <p>Beli bintang dunia (Mbappé, Haaland, Messi, CR7, Pelé)!</p>
+              </div>
+            </div>
+
+            <div class="action-card store-card" id="btn-goto-store">
+              <div class="card-bg-icon">🎁</div>
+              <div class="card-content">
+                <span class="card-tag">PACK OPENING</span>
+                <h3>BUKA PACK GACHA</h3>
+                <p>Dapatkan Prime ICON & Master Champions 100 OVR!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 2. LIVE MATCH VIEW ================= -->
+      <section id="view-match" class="view-section">
+        <!-- Match Scoreboard HUD -->
+        <div class="match-hud">
+          <div class="scoreboard">
+            <div class="team-tab home">
+              <span class="team-dot home"></span>
+              <span class="team-code">YOU</span>
+              <span class="team-score" id="match-score-home">0</span>
+            </div>
+            <div class="match-time-badge">
+              <span id="match-minute">0'</span>
+              <span class="half-label" id="match-half">1ST</span>
+            </div>
+            <div class="team-tab away">
+              <span class="team-score" id="match-score-away">0</span>
+              <span class="team-code">CPU</span>
+              <span class="team-dot away"></span>
+            </div>
+          </div>
+
+          <div class="commentary-bar" id="match-commentary">
+            Kick-off pertandingan segera dimulai!
+          </div>
+
+          <button id="btn-exit-match" class="btn-pause" title="Keluar Laga">⏸️ KELUAR</button>
+        </div>
+
+        <!-- Canvas HD Pitch Viewport -->
+        <div class="canvas-container">
+          <canvas id="match-canvas" width="1000" height="620"></canvas>
+
+          <!-- Desktop Key Control Guide Floating Pill -->
+          <div class="pc-controls-pill">
+            <span>[WASD / ◀▲▼▶] GERAK</span>
+            <span>[J / Q] PASSING</span>
+            <span>[K / E] SHOOT / POWER SHOT</span>
+            <span>[L / SPACE] SPRINT / TACKLE</span>
+          </div>
+
+          <!-- Mobile Touch Virtual Controls -->
+          <div id="mobile-controls" class="mobile-controls">
+            <div id="virtual-joystick" class="v-joystick">
+              <div id="joystick-knob" class="v-knob"></div>
+            </div>
+
+            <div class="v-buttons-grid">
+              <button id="vbtn-pass" class="v-btn pass-btn">
+                <span>⚽ PASS</span>
+              </button>
+              <button id="vbtn-shoot" class="v-btn shoot-btn">
+                <span>🔥 SHOOT</span>
+              </button>
+              <button id="vbtn-tackle" class="v-btn tackle-btn">
+                <span>🛡️ TACKLE</span>
+              </button>
+              <button id="vbtn-sprint" class="v-btn sprint-btn">
+                <span>⚡ SPRINT</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 3. SQUAD MANAGEMENT VIEW ================= -->
+      <section id="view-squad" class="view-section">
+        <div class="squad-layout">
+          <!-- Left: Tactical Pitch & Formation -->
+          <div class="squad-left">
+            <div class="squad-top-bar">
+              <div class="formation-selector">
+                <label>FORMASI:</label>
+                <select id="formation-select">
+                  <option value="4-3-3">4-3-3 Attack</option>
+                  <option value="4-4-2">4-4-2 Classic</option>
+                  <option value="3-5-2">3-5-2 Control</option>
+                  <option value="4-2-3-1">4-2-3-1 Wide</option>
+                </select>
+              </div>
+
+              <div class="squad-metrics">
+                <div class="metric-pill">
+                  <span>TEAM OVR:</span>
+                  <strong id="squad-team-ovr">85</strong>
+                </div>
+                <div class="metric-pill">
+                  <span>CHEMISTRY:</span>
+                  <strong id="squad-team-chem">100</strong>
+                </div>
+              </div>
+            </div>
+
+            <!-- Visual Tactics Board Pitch -->
+            <div class="tactics-pitch" id="tactics-pitch">
+              <!-- Player Slot Cards dynamically rendered -->
+            </div>
+          </div>
+
+          <!-- Right: Bench & Reserves Player Substitutions -->
+          <div class="squad-right">
+            <div class="bench-header">
+              <h3>BANGKU CADANGAN & RESERVES</h3>
+              <p>Klik kartu di lapangan lalu klik pemain di sini untuk <strong>GANTI PEMAIN</strong>!</p>
+            </div>
+
+            <div class="subs-container">
+              <h4 class="sub-category-title">BENCH (PENGGANTI UTAMA)</h4>
+              <div class="players-scroll-grid" id="bench-list"></div>
+
+              <h4 class="sub-category-title">RESERVES (CADANGAN KLUB)</h4>
+              <div class="players-scroll-grid" id="reserves-list"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 4. TRANSFER MARKET VIEW ================= -->
+      <section id="view-market" class="view-section">
+        <div class="market-layout">
+          <!-- Filter & Search Toolbar -->
+          <div class="market-toolbar">
+            <div class="search-box">
+              <input type="text" id="market-search" placeholder="Cari nama pemain, klub, atau negara...">
+            </div>
+
+            <div class="filter-group">
+              <select id="market-pos-filter">
+                <option value="ALL">Semua Posisi</option>
+                <option value="ST">ST (Striker)</option>
+                <option value="LW">LW (Left Winger)</option>
+                <option value="RW">RW (Right Winger)</option>
+                <option value="CAM">CAM (Attacking Mid)</option>
+                <option value="CM">CM (Central Mid)</option>
+                <option value="CDM">CDM (Defensive Mid)</option>
+                <option value="CB">CB (Center Back)</option>
+                <option value="LB">LB (Left Back)</option>
+                <option value="RB">RB (Right Back)</option>
+                <option value="GK">GK (Goalkeeper)</option>
+              </select>
+
+              <select id="market-tier-filter">
+                <option value="ALL">Semua Tier Kartu</option>
+                <option value="ICON">Prime ICON (97-100 OVR)</option>
+                <option value="MASTER">Master Champions (93-96 OVR)</option>
+                <option value="ELITE">Elite (88-92 OVR)</option>
+                <option value="GOLD">Gold (80-87 OVR)</option>
+                <option value="SILVER">Silver (70-79 OVR)</option>
+                <option value="BRONZE">Bronze (60-69 OVR)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Market Listings Grid -->
+          <div class="market-grid" id="market-listings">
+            <!-- Dynamic player market cards -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 5. PACK STORE VIEW ================= -->
+      <section id="view-store" class="view-section">
+        <div class="store-layout">
+          <div class="store-header">
+            <h2>CHAMPIONS PACK OPENING</h2>
+            <p>Buka paket kartu untuk mendapatkan pemain bintang kelas dunia berperingkat hingga 100 OVR!</p>
+          </div>
+
+          <div class="packs-grid" id="packs-container">
+            <!-- Dynamic Store Packs -->
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- BOTTOM GLOBAL NAVIGATION BAR -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-view="home">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-btn" data-view="match">
+        <span class="nav-icon">⚽</span>
+        <span class="nav-label">Match</span>
+      </button>
+      <button class="nav-btn" data-view="squad">
+        <span class="nav-icon">📋</span>
+        <span class="nav-label">My Team</span>
+      </button>
+      <button class="nav-btn" data-view="market">
+        <span class="nav-icon">🛒</span>
+        <span class="nav-label">Market</span>
+      </button>
+      <button class="nav-btn" data-view="store">
+        <span class="nav-icon">🎁</span>
+        <span class="nav-label">Store</span>
+      </button>
+    </nav>
+
+    <!-- ================= MODALS & POPUPS ================= -->
+
+    <!-- Pack Walkout Reveal Modal -->
+    <div id="modal-pack-reveal" class="modal-overlay hidden">
+      <div class="pack-reveal-card" id="pack-reveal-container">
+        <div class="reveal-particles"></div>
+        <div class="reveal-badge" id="reveal-tier-badge">PRIME ICON</div>
+        <div class="reveal-card-wrapper" id="reveal-card-target"></div>
+        <div class="reveal-info">
+          <h2 id="reveal-player-name">PELÉ</h2>
+          <p id="reveal-player-club">Santos Legends • 🇧🇷 Brasil</p>
+        </div>
+        <button id="btn-close-reveal" class="btn-primary">🎉 KLAIM PEMAIN KE SKUAD</button>
+      </div>
+    </div>
+
+    <!-- Match Result Modal -->
+    <div id="modal-match-result" class="modal-overlay hidden">
+      <div class="result-card">
+        <div class="result-banner" id="result-title">VICTORY!</div>
+        <div class="result-score" id="result-score-text">3 - 1</div>
+        <div class="rewards-box">
+          <h3>HADIAH PERTANDINGAN</h3>
+          <div class="reward-row">
+            <span>🪙 KOIN DIDAPAT:</span>
+            <strong id="reward-coins">+5,000</strong>
+          </div>
+          <div class="reward-row">
+            <span>💎 GEMS DIDAPAT:</span>
+            <strong id="reward-gems">+50</strong>
+          </div>
+        </div>
+        <button id="btn-claim-match-reward" class="btn-primary">LOBI UTAMA</button>
+      </div>
+    </div>
+
+    <!-- Player Details Modal -->
+    <div id="modal-player-detail" class="modal-overlay hidden">
+      <div class="player-detail-card" id="player-detail-content"></div>
+    </div>
+
+  </div>
+
+  <!-- Scripts Entry Point (100% Standalone & Cross-Platform) -->
+  <script src="game.js"></script>
+</body>
+</html>
